@@ -1,0 +1,38 @@
+def simplify_path(path):
+    if not path.startswith('/'):
+        return "This path is Invalid"
+
+    stack = []
+    currentDirectory = ""
+    
+    for character in path:
+        if character == "/":
+            if currentDirectory:  
+                if currentDirectory == '..':
+                    if stack:  
+                        stack.pop()
+                elif currentDirectory != ".":  
+                    stack.append(currentDirectory)
+                currentDirectory = "" 
+        else:
+            currentDirectory += character 
+
+    if currentDirectory:
+        if currentDirectory == "..":
+            if stack:
+                stack.pop()
+        elif currentDirectory != ".":
+            stack.append(currentDirectory)
+
+    simplified_filePath = "/" + "/".join(stack)
+    return simplified_filePath if stack else "/"
+
+def main():
+    # Takes Unix path as input
+    path = input("Please input the path here: ")
+    
+    # Simplify the path
+    print(simplify_path(path))
+
+if __name__ == "__main__":
+    main()
